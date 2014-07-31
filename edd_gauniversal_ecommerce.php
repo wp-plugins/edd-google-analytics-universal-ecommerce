@@ -4,7 +4,7 @@
  * Plugin Name: EDD Google Analytics Universal Ecommerce
  * Plugin URI: http://danlester.com/eddgaue
  * Description: Ecommerce tracking for EDD using Google Universal Analytics - assumes you already create a ga object at the top of the page, and have enabled Ecommerce on your GA dashboard
- * Version: 1.0
+ * Version: 1.1
  * Author: Dan Lester
  * Author URI: http://wp-glogin.com/
  * License: GPL3
@@ -23,6 +23,8 @@
 function edd_ga_ua_ecom_payment_receipt_after_table($payment, $edd_receipt_args) {
 	
 	if ( $edd_receipt_args['payment_id'] ) {
+		$grand_total = edd_get_payment_amount( $payment->ID );
+		
 		?>
 		<script type="text/javascript">
 
@@ -32,7 +34,7 @@ function edd_ga_ua_ecom_payment_receipt_after_table($payment, $edd_receipt_args)
 			ga('ecommerce:addTransaction', {
 				  'id': '<?php echo esc_js(edd_get_payment_number( $payment->ID )); ?>', // Transaction ID. Required.
 				  'affiliation': '<?php echo esc_js(get_bloginfo('name')); ?>', // Affiliation or store name.
-				  'revenue': '<?php echo $edd_receipt_args[ 'price' ] ? esc_js($edd_receipt_args[ 'price' ]) : '0'; ?>', // Grand Total.
+				  'revenue': '<?php echo $grand_total ? esc_js($grand_total) : '0'; ?>', // Grand Total.
 				  'shipping': '0', // Shipping.
 				  'tax': '<?php echo edd_use_taxes() ? esc_js(edd_payment_tax( $payment->ID )) : '0'; ?>' // Tax.
 				});

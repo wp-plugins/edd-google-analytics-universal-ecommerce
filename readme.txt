@@ -3,7 +3,7 @@ Contributors: danlester
 Tags: edd, easy digital downloads, google analytics, universal google analytics, ecommerce, ua
 Requires at least: 3.3
 Tested up to: 3.9
-Stable tag: 1.0
+Stable tag: 1.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -57,6 +57,11 @@ the Plugins section of your Wordpress admin
 
 
 == Changelog ==
+
+= 1.1 =
+
+Total revenue was not being recording correctly, although individual product revenue was.
+Fixed now.
 
 = 1.0 =
 
