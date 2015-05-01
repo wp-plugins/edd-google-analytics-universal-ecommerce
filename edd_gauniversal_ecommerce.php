@@ -4,7 +4,7 @@
  * Plugin Name: EDD Google Analytics Universal Ecommerce
  * Plugin URI: http://danlester.com/eddgaue
  * Description: Ecommerce tracking for EDD using Google Universal Analytics - assumes you already create a ga object at the top of the page, and have enabled Ecommerce on your GA dashboard
- * Version: 1.1
+ * Version: 1.2
  * Author: Dan Lester
  * Author URI: http://wp-glogin.com/
  * License: GPL3
@@ -23,12 +23,17 @@
 function edd_ga_ua_ecom_payment_receipt_after_table($payment, $edd_receipt_args) {
 	
 	if ( $edd_receipt_args['payment_id'] ) {
+		// Use a meta value so we only send the beacon once.
+		if (get_post_meta( $payment->ID, 'edd_ga_beacon_sent', true)) {
+			return;
+		}
+		
 		$grand_total = edd_get_payment_amount( $payment->ID );
 		
 		?>
 		<script type="text/javascript">
 
-		if (ga) {
+		if (typeof ga != "undefined") {
 			ga('require', 'ecommerce', 'ecommerce.js');
 			
 			ga('ecommerce:addTransaction', {
@@ -71,6 +76,9 @@ function edd_ga_ua_ecom_payment_receipt_after_table($payment, $edd_receipt_args)
 		 }
 		</script>
 		<?php 
+		
+		update_post_meta( $payment->ID, 'edd_ga_beacon_sent', true );
+		
 	}
 	
 }
